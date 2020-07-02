@@ -1,6 +1,6 @@
 let YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
-const YOUTUBE_AUTH_KEY = process.env.REACT_APP_YOUTUBE_KEY; //'ADD_YOUR_KEY' "AIzaSyDPcrfdl5vuvyO4VPjnZ6xp-FcWRIFLb5o"
-console.log(YOUTUBE_AUTH_KEY);
+const YOUTUBE_AUTH_KEY = process.env.REACT_APP_YOUTUBE_KEY;
+
 export const searchVideos = (searchText) => {
   const URL = `${YOUTUBE_API_URL}/search?part=snippet&q=${searchText}&maxResults=25&key=${YOUTUBE_AUTH_KEY}`;
 
@@ -20,7 +20,7 @@ export const getVideoInfo = (videoId) => {
   return new Promise((resolve, reject) => {
     resolve(
       fetch(URL)
-        .then((data) => data)
+        .then((data) => data.json())
         .catch(error => reject(error))
     );
   })
@@ -33,7 +33,7 @@ export const getVideoComments = (videoId) => {
   return new Promise((resolve, reject) => {
     resolve(
       fetch(URL)
-        .then((data) => data)
+        .then((data) => data.json())
         .catch(error => reject(error))
     );
   })
