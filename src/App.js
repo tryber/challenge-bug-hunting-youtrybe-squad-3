@@ -18,13 +18,13 @@ class App extends Component {
           <Header />
           <Switch>
             <Route exact path="/" component={InitialPage} />
-            {/* <Route exact path="/watch/:videoId" render={props => <VideoPage {...props} />} />
+            {/* <Route exact path="/watch/:videoId" render={props => <VideoPage {...props} />} /> */}
             <Route
               exact
               path="/results/:searchParam"
               render={props => <SearchResult {...props} />}
             />
-            <Route component={NotFound} /> */}
+            {/* <Route component={NotFound} /> */}
           </Switch>
         </div>
       </Router>
