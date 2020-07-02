@@ -20,14 +20,16 @@ class SearchResult extends Component {
       params: { searchParam },
     } = this.props.match;
 
-    searchVideos(searchParam).then((data) => {
-      this.setState({ data: data.items });
-    }).catch(error => this.setState({error: error}))
+    searchVideos(searchParam)
+      .then(data => {
+        this.setState({ data: data.items.slice(1, data.items.length) });
+      })
+      .catch(error => this.setState({ error: error }));
   }
 
   render() {
     const { data } = this.state;
-    
+
     if (data.length < 1) return <div>Loading...</div>;
 
     return (

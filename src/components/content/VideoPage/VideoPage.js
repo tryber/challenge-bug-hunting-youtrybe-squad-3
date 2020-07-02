@@ -21,11 +21,9 @@ class VideoPage extends Component {
   }
 
   componentDidMount() {
-    getVideoInfo(this.state.videoId)
-      .then((data) => this.setState({ videoInfo: data.items[0] }));
+    getVideoInfo(this.state.videoId).then(data => this.setState({ videoInfo: data.items[0] }));
 
-    getVideoComments(this.state.videoId)
-      .then(data => this.setState({ videoComments: data.items }));
+    getVideoComments(this.state.videoId).then(data => this.setState({ videoComments: data.items }));
   }
 
   handleSelectedVideo(videoId) {
