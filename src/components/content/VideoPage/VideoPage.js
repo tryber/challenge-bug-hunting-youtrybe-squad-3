@@ -26,11 +26,12 @@ class VideoPage extends Component {
     getVideoComments(this.state.videoId).then(data => this.setState({ videoComments: data.items }));
   }
 
-  handleSelectedVideo(videoId) {
-    this.setState({ videoId: videoId });
+  async handleSelectedVideo(videoId) {
+    await this.setState({ videoId: videoId });
     getVideoInfo(this.state.videoId).then(data => this.setState({ videoInfo: data.items[0] }));
-
+    
     getVideoComments(this.state.videoId).then(data => this.setState({ videoComments: data.items }));
+    console.log(typeof this.props.history);
     this.props.history.push(`/watch/${videoId}`);
   }
 
