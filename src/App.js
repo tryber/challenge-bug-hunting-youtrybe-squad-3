@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 
 import './App.css';
 import './css/mainContents.css';
@@ -9,6 +9,7 @@ import VideoPage from './components/content/VideoPage/VideoPage';
 import SearchResult from './components/content/SearchResult';
 import NotFound from './components/content/NotFound';
 import InitialPage from './components/content/InitialPage';
+import RedirectPage from './components/content/RedirectPage';
 
 class App extends Component {
   render() {
@@ -24,7 +25,8 @@ class App extends Component {
               path="/results/:searchParam"
               render={props => <SearchResult {...props} />}
             />
-            {/* <Route component={NotFound} /> */}
+            <Route path="/redirectPage" component={RedirectPage} />
+            <Route component={NotFound} />
           </Switch>
         </div>
       </Router>
