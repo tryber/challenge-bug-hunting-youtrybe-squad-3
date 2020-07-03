@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import VideoPlayer from './VideoPlayer/VideoPlayer';
 import VideoPlayerDescription from './VideoPlayer/VideoPlayerDescription';
 import VideoPlayerInfo from './VideoPlayer/VideoPlayerInfo';
@@ -15,6 +16,7 @@ class VideoPage extends Component {
       relatedVideos: this.props.location.state.data,
       videoInfo: null,
       videoComments: null,
+      redirect: false,
     };
 
     this.handleSelectedVideo = this.handleSelectedVideo.bind(this);
@@ -22,43 +24,51 @@ class VideoPage extends Component {
 
   componentDidMount() {
     getVideoInfo(this.state.videoId).then(data => this.setState({ videoInfo: data.items[0] }));
-
     getVideoComments(this.state.videoId).then(data => this.setState({ videoComments: data.items }));
   }
 
-  async handleSelectedVideo(videoId) {
-    await this.setState({ videoId: videoId });
-    getVideoInfo(this.state.videoId).then(data => this.setState({ videoInfo: data.items[0] }));
+  componentDidUpdate(prevProps, prevState) {
     
-    getVideoComments(this.state.videoId).then(data => this.setState({ videoComments: data.items }));
-    console.log(typeof this.props.history);
-    this.props.history.push(`/watch/${videoId}`);
+  }
+
+  handleSelectedVideo(videoId) {
+    this.setState({ videoId: videoId });
+    getVideoInfo(this.state.videoId).then(data => this.setState({ videoInfo: data.items[0] }));
+
+    getVideoComments(this.state.videoId).then(data =>
+      this.setState({
+        videoComments: data.items,
+        redirect: true,
+      }),
+    );
   }
 
   render() {
-    if (!this.state.videoInfo || !this.state.videoComments) return <main>AAAAAAAAAAAAA</main>;
+    const { videoInfo, videoComments, redirect, videoId, relatedVideos } = this.state;
+    if (!videoInfo || !videoComments) return <main>Loading...</main>;
 
+    if (redirect)
+      return (
+        <Redirect push to={{ pathname: `/watch/${videoId}`, state: { data: relatedVideos } }} />
+      );
     return (
       <main>
         <section className="player">
-          <VideoPlayer embedId={this.state.videoId} />
-          <VideoPlayerInfo
-            statisticsInfo={this.state.videoInfo.statistics}
-            title={this.state.videoInfo.snippet.title}
-          />
+          <VideoPlayer embedId={videoId} />
+          <VideoPlayerInfo statisticsInfo={videoInfo.statistics} title={videoInfo.snippet.title} />
           <VideoPlayerDescription
-            channelTitle={this.state.videoInfo.snippet.channelTitle}
-            description={this.state.videoInfo.snippet.description}
-            publishedAt={this.state.videoInfo.snippet.publishedAt}
+            channelTitle={videoInfo.snippet.channelTitle}
+            description={videoInfo.snippet.description}
+            publishedAt={videoInfo.snippet.publishedAt}
           />
           <VideoPlayerComments
-            statisticsInfo={this.state.videoInfo.statistics}
-            videoComments={this.state.videoComments}
+            statisticsInfo={videoInfo.statistics}
+            videoComments={videoComments}
           />
         </section>
         <section className="sidebar">
           <VideoSideBar
-            relatedVideos={this.state.relatedVideos}
+            relatedVideos={relatedVideos}
             handleSelectedVideo={this.handleSelectedVideo}
           />
         </section>
