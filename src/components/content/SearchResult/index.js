@@ -40,7 +40,7 @@ class SearchResult extends Component {
             key={item.etag}
             to={{
               pathname: `/watch/${item.id.videoId}`,
-              state: { data: data },
+              state: { data },
             }}
           >
             <VideoCard video={item} />

@@ -24,8 +24,11 @@ class VideoPage extends Component {
 
   componentDidMount() {
     getVideoInfo(this.state.videoId).then(data => this.setState({ videoInfo: data.items[0] }));
-
     getVideoComments(this.state.videoId).then(data => this.setState({ videoComments: data.items }));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    
   }
 
   handleSelectedVideo(videoId) {
@@ -42,10 +45,12 @@ class VideoPage extends Component {
 
   render() {
     const { videoInfo, videoComments, redirect, videoId, relatedVideos } = this.state;
-    if (!videoInfo || !videoComments) return <main>AAAAAAAAAAAAA</main>;
+    if (!videoInfo || !videoComments) return <main>Loading...</main>;
 
     if (redirect)
-      return <Redirect to={{ pathname: `/watch/${videoId}`, state: { data: relatedVideos } }} />;
+      return (
+        <Redirect push to={{ pathname: `/watch/${videoId}`, state: { data: relatedVideos } }} />
+      );
     return (
       <main>
         <section className="player">
