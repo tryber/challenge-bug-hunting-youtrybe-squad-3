@@ -49,7 +49,12 @@ class VideoPage extends Component {
       return (
         <Redirect
           push
-          to={{ pathname: `/redirectPage`, state: { data: relatedVideos }, link: `/watch/${videoId}`, relatedVideos }}
+          to={{
+            pathname: `/redirectPage`,
+            state: { data: relatedVideos },
+            link: `/watch/${videoId}`,
+            relatedVideos,
+          }}
         />
       );
     return (
